@@ -61,112 +61,119 @@ public class EmployeeControllerTest {
         Assert.assertEquals(expectedResponseCode,         actualResponse.getStatus());
         JSONAssert.assertEquals(expectedResponse, actualResponse.getContentAsString(), false);
     }
-//
-//    @Test
-//    public void testSaveEmployeeAlreadyExists() throws Exception{
-//        int expectedResponseCode = 400;
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(mockEmployee);
-//
-//
-//        requestBuilder = MockMvcRequestBuilders.post(
-//                "/employee/").accept(
-//                MediaType.APPLICATION_JSON).content(exampleEmployeeJSON).contentType(MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//        Assert.assertEquals(expectedResponseCode,         actualResponse.getStatus());
-//    }
-//
-//
-//    @Test
-//    public void testSaveEmployeeException() throws Exception{
-//        int expectedResponseCode = 500;
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(null);
-//
-//        Mockito.when(employeeService.save(Mockito.any(Employee.class))).thenThrow(Exception.class);;
-//
-//
-//        requestBuilder = MockMvcRequestBuilders.post(
-//                "/employee/").accept(
-//                MediaType.APPLICATION_JSON).content(exampleEmployeeJSON).contentType(MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//        Assert.assertEquals(expectedResponseCode,         actualResponse.getStatus());
-//    }
-//
-//
-//    @Test
-//    public void testGetEmployeeSuccess() throws Exception{
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(mockEmployee);
-//
-//        requestBuilder = MockMvcRequestBuilders.get(
-//                "/employee/1").accept(
-//                MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//        int expectedResponseCode = 200;
-//
-//        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
-//
-//        JSONAssert.assertEquals(expectedResponse, actualResponse.getContentAsString(), false);
-//    }
-//
-//
-//    @Test
-//    public void testGetEmployeeNotFound() throws Exception{
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(null);
-//
-//        requestBuilder = MockMvcRequestBuilders.get(
-//                "/employee/1").accept(
-//                MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//        int expectedResponseCode = 404;
-//
-//        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
-//    }
-//
-//    @Test
-//    public void testGetEmployeethrowException() throws Exception{
-//        int expectedResponseCode = 500;
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenThrow(Exception.class);
-//        requestBuilder = MockMvcRequestBuilders.get(
-//                "/employee/1").accept(
-//                MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//
-//        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
-//    }
-//
-//
-//    @Test
-//    public void testDeleteEmployeeSuccess() throws Exception{
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(mockEmployee);
-//
-//        requestBuilder = MockMvcRequestBuilders.delete(
-//                "/employee/1").accept(
-//                MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//        int expectedResponseCode = 200;
-//
-//        Mockito.doNothing().when(employeeService).delete(Mockito.anyLong());
-//        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
-//    }
-//
-//    @Test
-//    public void testDeleteEmployeeNotFound() throws Exception{
-//        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(null);
-//
-//        requestBuilder = MockMvcRequestBuilders.delete(
-//                "/employee/1").accept(
-//                MediaType.APPLICATION_JSON);
-//        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
-//        MockHttpServletResponse actualResponse = actualResult.getResponse();
-//        int expectedResponseCode = 404;
-//
-//        Mockito.doNothing().when(employeeService).delete(Mockito.anyLong());
-//        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
-//    }
+
+    @Test
+    @Ignore
+    public void testSaveEmployeeAlreadyExists() throws Exception{
+        int expectedResponseCode = 400;
+        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.of(mockEmployee));
+
+
+        requestBuilder = MockMvcRequestBuilders.post(
+                "/employee/").accept(
+                MediaType.APPLICATION_JSON).content(exampleEmployeeJSON).contentType(MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+        Assert.assertEquals(expectedResponseCode,         actualResponse.getStatus());
+    }
+
+
+    @Test
+    @Ignore
+    public void testSaveEmployeeException() throws Exception{
+        int expectedResponseCode = 500;
+        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+
+        Mockito.when(employeeService.save(Mockito.any(Employee.class))).thenThrow(Exception.class);;
+
+
+        requestBuilder = MockMvcRequestBuilders.post(
+                "/employee/").accept(
+                MediaType.APPLICATION_JSON).content(exampleEmployeeJSON).contentType(MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+        Assert.assertEquals(expectedResponseCode,         actualResponse.getStatus());
+    }
+
+
+    @Test
+    @Ignore
+    public void testGetEmployeeSuccess() throws Exception{
+        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.of(mockEmployee));
+
+        requestBuilder = MockMvcRequestBuilders.get(
+                "/employee/1").accept(
+                MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+        int expectedResponseCode = 200;
+
+        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
+
+        JSONAssert.assertEquals(expectedResponse, actualResponse.getContentAsString(), false);
+    }
+
+
+    @Test
+    @Ignore
+    public void testGetEmployeeNotFound() throws Exception{
+        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+
+        requestBuilder = MockMvcRequestBuilders.get(
+                "/employee/1").accept(
+                MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+        int expectedResponseCode = 404;
+
+        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
+    }
+
+    @Test
+    @Ignore
+    public void testGetEmployeethrowException() throws Exception{
+        int expectedResponseCode = 500;
+        Mockito.when(employeeService.get(Mockito.anyString())).thenThrow(Exception.class);
+        requestBuilder = MockMvcRequestBuilders.get(
+                "/employee/1").accept(
+                MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+
+        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
+    }
+
+
+    @Test
+    @Ignore
+    public void testDeleteEmployeeSuccess() throws Exception{
+        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.of(mockEmployee));
+
+        requestBuilder = MockMvcRequestBuilders.delete(
+                "/employee/1").accept(
+                MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+        int expectedResponseCode = 200;
+
+        Mockito.doNothing().when(employeeService).delete(Mockito.anyLong());
+        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
+    }
+
+    @Test
+    @Ignore
+    public void testDeleteEmployeeNotFound() throws Exception{
+        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+
+        requestBuilder = MockMvcRequestBuilders.delete(
+                "/employee/1").accept(
+                MediaType.APPLICATION_JSON);
+        MvcResult actualResult = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse actualResponse = actualResult.getResponse();
+        int expectedResponseCode = 404;
+
+        Mockito.doNothing().when(employeeService).delete(Mockito.anyLong());
+        Assert.assertEquals(expectedResponseCode, actualResponse.getStatus());
+    }
 
 }
