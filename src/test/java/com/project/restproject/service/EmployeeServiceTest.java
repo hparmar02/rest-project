@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EmployeeServiceTest {
@@ -35,8 +37,8 @@ public class EmployeeServiceTest {
     public void testGet() throws Exception{
         Employee newEmployee = new Employee(1L, "testFirstName", "testLastName");
         employeeService.save(newEmployee);
-        Employee actualEmployee = employeeService.get(1L);
-        Assert.assertEquals(newEmployee, actualEmployee);
+        Optional<Employee> actualEmployee = employeeService.get("testFirstName");
+        Assert.assertEquals(newEmployee, actualEmployee.get());
     }
 
     @Test
@@ -44,12 +46,12 @@ public class EmployeeServiceTest {
         Employee newEmployee = new Employee(1L, "testFirstName", "testLastName");
         employeeService.save(newEmployee);
 
-        Employee employeeSaved = employeeService.get(1L);
-        Assert.assertEquals(newEmployee, employeeSaved);
+        Optional<Employee> employeeSaved = employeeService.get("testFirstName");
+        Assert.assertEquals(newEmployee, employeeSaved.get());
         employeeService.delete(1L);
 
-        Employee actualEmployee = employeeService.get(1L);
-        Assert.assertNull(actualEmployee);
+        Optional<Employee> actualEmployee = employeeService.get("testFirstName");
+        Assert.assertFalse(actualEmployee.isPresent());
 
     }
 }

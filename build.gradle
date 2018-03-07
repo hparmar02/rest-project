@@ -25,15 +25,17 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-redis')
 	compile('org.springframework.boot:spring-boot-starter-web'){
         exclude module: 'spring-boot-starter-tomcat'
     }
-	compile('org.springframework.boot:spring-boot-starter-jetty')
+	runtime("com.h2database:h2")
 
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+	compile('org.springframework.boot:spring-boot-starter-jetty')
+	runtime('mysql:mysql-connector-java')
 	compile("io.springfox:springfox-swagger-ui:2.6.1")
     compile("io.springfox:springfox-swagger2:2.6.1")
-
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-
+	test("com.h2database:h2")
 }

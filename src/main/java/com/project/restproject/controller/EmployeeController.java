@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @Api(tags = "Employee", value = "EmployeeRestApi", description = "Rest Api for Employee")
 public class EmployeeController {
@@ -21,63 +23,64 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @ApiOperation(value = "Returns Employee for an id")
+    @ApiOperation(value = "Returns Employee for a firstName")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 200, message = "Employee Object" ),
-                    @ApiResponse(code = 404, message = "Employee not found with Id" ),
+                    @ApiResponse(code = 404, message = "Employee not found" ),
                     @ApiResponse(code = 500, message = "Exception - Internal Error" )
             }
     )
-    @RequestMapping(value = "/employee/{id}", method= RequestMethod.GET)
-    public ResponseEntity<?> getEmployee(@PathVariable("id") Long id){
-        logger.info("GET Request received for Employee Id: {}", id);
+    @RequestMapping(value = "/employee/{firstName}", method= RequestMethod.GET)
+    public ResponseEntity<?> getEmployee(@PathVariable("firstName") String firstName){
+        logger.info("GET Request received for Employee firstName: {}", firstName);
         try{
-            Employee employee = employeeService.get(id);
-            if (employee == null){
-                logger.error("GET Employee with id: {} NOT found.", id);
-                return new ResponseEntity<>("Employee not found with Id: " + id, HttpStatus.NOT_FOUND);
+            Optional<Employee> employee = employeeService.get(firstName);
+            if (employee.isPresent()){
+                return new ResponseEntity<>(employee, HttpStatus.OK);
             }
-            return new ResponseEntity<>(employee, HttpStatus.OK);
+            logger.error("GET Employee with firstName: {} NOT found.", firstName);
+            return new ResponseEntity<>("Employee not found with firstName: " + firstName, HttpStatus.NOT_FOUND);
         } catch (Exception ex){
-            logger.error("Exception - Get Request for Employee id: {}.",id, ex);
+            logger.error("Exception - Get Request for Employee firstName: {}.",firstName, ex);
             return new ResponseEntity<>("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @ApiOperation(value = "Deletes Employee for an id")
+    @ApiOperation(value = "Deletes Employee for firstName")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 200, message = "Successfully deleted" ),
-                    @ApiResponse(code = 404, message = "Get Employee with Id not found, Delete not completed" ),
+                    @ApiResponse(code = 404, message = "Get Employee not found, Delete not completed" ),
                     @ApiResponse(code = 500, message = "Exception - Internal Error" )
             }
     )
-    @RequestMapping(value = "/employee/{id}", method= RequestMethod.DELETE)
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
-        logger.info("DELETE Request received for Employee Id: {}", id);
+    @RequestMapping(value = "/employee/{firstName}", method= RequestMethod.DELETE)
+    public ResponseEntity<?> deleteEmployee(@PathVariable("firstName") String firstName){
+        logger.info("DELETE Request received for Employee firstName: {}", firstName);
         try{
-            Employee employee = employeeService.get(id);
-            if (employee == null){
-                logger.error("GET Employee with id: {} NOT found. DELETE not completed", id);
-                return new ResponseEntity<>("Delete NOT done. " +
-                        "Employee NOT found with Id: " + id, HttpStatus.NOT_FOUND);
+            Optional<Employee> employee = employeeService.get(firstName);
+            if (employee.isPresent()){
+
+                employeeService.delete(employee.get().getId());
+                logger.debug("Employee with firstName: {} successfully DELETE", firstName);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
-            employeeService.delete(id);
-            logger.debug("Employee with ID: {} successfully DELETE", id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            logger.error("GET Employee with firstName: {} NOT found. DELETE not completed", firstName);
+            return new ResponseEntity<>("Delete NOT done. " +
+                    "Employee NOT found with firstName: " + firstName, HttpStatus.NOT_FOUND);
         } catch (Exception ex){
-            logger.error("Exception - DELETE Request for Employee id: {}.",id, ex);
+            logger.error("Exception - DELETE Request for Employee firstName: {}.",firstName, ex);
             return new ResponseEntity<>("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    @ApiOperation(value = "Creates / Saves Employee with an id")
+    @ApiOperation(value = "Creates / Saves Employee")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 201, message = "Successfully saved / created" ),
-                    @ApiResponse(code = 404, message = "Get Employee with Id not found, Delete not completed" ),
+                    @ApiResponse(code = 404, message = "Get Employee not found, Delete not completed" ),
                     @ApiResponse(code = 500, message = "Exception - Internal Error" )
             }
     )
@@ -86,14 +89,15 @@ public class EmployeeController {
 
         logger.info("Save employee : {}", employee);
         try{
-            Employee existingEmployee = employeeService.get(employee.getId());
-            if (existingEmployee == null){
-                Employee savedEmployee = employeeService.save(employee);
-                return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+            Optional<Employee> existingEmployee = employeeService.get(employee.getFirstName());
+            if (existingEmployee.isPresent()){
+                logger.error("Employee exists with - Employee: {} - Save NOT completed.", existingEmployee);
+                return new ResponseEntity<>("Employee exists with firstName " + employee.getFirstName(), HttpStatus.BAD_REQUEST);
             }
+            Employee savedEmployee = employeeService.save(employee);
+            return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
 
-            logger.error("Employee exists with ID: {} - Employee: {} - Save NOT completed.", existingEmployee.getId(), existingEmployee);
-            return new ResponseEntity<>("Employee exists with ID " + employee.getId(), HttpStatus.BAD_REQUEST);
+
         } catch (Exception ex){
             logger.error("Exception - Save Request for Employee: {}.",employee, ex);
             return new ResponseEntity<>("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);

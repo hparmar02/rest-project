@@ -1,8 +1,9 @@
 package com.project.restproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Objects;
 
 
@@ -14,20 +15,27 @@ import java.util.Objects;
  * @since   2018-03-04
  */
 
-public class Employee implements Serializable {
+@Entity
+@Table(name = "employee")
+public class Employee {
 
-    private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(notes = "Id of the Employee")
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @JsonIgnore
+    private long id;
+
 
     @ApiModelProperty(notes = "FirstName of the Employee")
+    @Column(name = "firstName")
     private String firstName;
 
     @ApiModelProperty(notes = "LastName of the Employee")
+    @Column(name = "lastName")
     private String lastName;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -41,7 +49,21 @@ public class Employee implements Serializable {
         return lastName;
     }
 
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public Employee() {
+
     }
 
     public Employee(Long id, String firstName, String lastName) {
@@ -59,15 +81,19 @@ public class Employee implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) &&
-                Objects.equals(firstName, employee.firstName) &&
-                Objects.equals(lastName, employee.lastName);
+
+        if (id != employee.id) return false;
+        if (!firstName.equals(employee.firstName)) return false;
+        return lastName.equals(employee.lastName);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, firstName, lastName);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        return result;
     }
 }

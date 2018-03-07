@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 /**
  * <h1>Service for Employee Information</h1>
@@ -28,6 +30,7 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
 
+
     /**
      * This method is used to save employee.
      * @param employee This is the only parameter to save method
@@ -40,12 +43,12 @@ public class EmployeeService {
 
     /**
      * This method is used find an Employee by giving an id.
-     * @param id This is the parameter to get method
+     * @param firstName This is the parameter to get method
      * @return Employee This returns Employee object for the id.
      */
-    public Employee get(Long id) throws Exception{
-        logger.debug("Get Employee for Id: {}", id);
-        return employeeRepository.get(id);
+    public Optional<Employee> get(String firstName) throws Exception{
+        logger.debug("Get Employee for FirstName: {}", firstName);
+        return employeeRepository.getByFirstName(firstName);
     }
 
     /**
@@ -55,6 +58,6 @@ public class EmployeeService {
      */
     public void delete(Long id){
         logger.debug("Delete Employee for Id: {}", id);
-        employeeRepository.delete(id);
+        employeeRepository.deleteById(id);
     }
 }
