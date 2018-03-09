@@ -19,39 +19,39 @@ public class EmployeeServiceTest {
     @Autowired
     private EmployeeService employeeService;
 
-    private Employee newEmployee;
-
-    @Before
-    public void setUp(){
-        newEmployee = new Employee(1L, "testFirstName", "testLastName");
-    }
-
     @Test
     public void testSave() throws Exception{
+        Employee newEmployee = new Employee ("firstNameTest", "lastNameTest");
+
         Employee actualEmployee = employeeService.save(newEmployee);
         Assert.assertEquals(newEmployee, actualEmployee);
     }
 
 
-    @Test
-    public void testGet() throws Exception{
-        Employee newEmployee = new Employee(1L, "testFirstName", "testLastName");
-        employeeService.save(newEmployee);
-        Optional<Employee> actualEmployee = employeeService.get("testFirstName");
-        Assert.assertEquals(newEmployee, actualEmployee.get());
-    }
 
     @Test
     public void testDelete() throws Exception{
-        Employee newEmployee = new Employee(1L, "testFirstName", "testLastName");
+        Employee newEmployee = new Employee ("firstNameTest_1", "lastNameTest_!");
+
         employeeService.save(newEmployee);
 
-        Optional<Employee> employeeSaved = employeeService.get("testFirstName");
-        Assert.assertEquals(newEmployee, employeeSaved.get());
-        employeeService.delete(1L);
+        Optional<Employee> savedEmployee = employeeService.get("firstNameTest_1");
+        Assert.assertEquals(newEmployee, savedEmployee.get());
+        Long id = savedEmployee.get().getId();
+        employeeService.delete(id);
 
-        Optional<Employee> actualEmployee = employeeService.get("testFirstName");
+        Optional<Employee> actualEmployee = employeeService.get("firstNameTest_1");
         Assert.assertFalse(actualEmployee.isPresent());
 
+    }
+
+
+    @Test
+    public void testGet() throws Exception{
+        Employee newEmployee = new Employee ("firstNameTest_2", "lastNameTest_2");
+
+        employeeService.save(newEmployee);
+        Optional<Employee> actualEmployee = employeeService.get("firstNameTest_2");
+        Assert.assertEquals(newEmployee, actualEmployee.get());
     }
 }

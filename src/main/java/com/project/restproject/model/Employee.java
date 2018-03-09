@@ -66,8 +66,7 @@ public class Employee {
 
     }
 
-    public Employee(Long id, String firstName, String lastName) {
-        this.id = id;
+    public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }

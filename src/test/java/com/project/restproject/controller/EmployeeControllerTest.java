@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -42,7 +41,7 @@ public class EmployeeControllerTest {
     public void setUp(){
         expectedResponse = "{\"id\":1,\"firstName\":\"testFirstName\",\"lastName\":\"testLastName\"}";
         exampleEmployeeJSON = "{\"firstName\":\"testFirstName\",\"id\":1,\"lastName\":\"testLastName\"}";
-        mockEmployee = new Employee(1L, "testFirstName", "testLastName");
+        mockEmployee = new Employee("testFirstName", "testLastName");
     }
 
     @Test
