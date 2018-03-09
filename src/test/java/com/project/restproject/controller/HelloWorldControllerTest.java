@@ -26,7 +26,6 @@ public class HelloWorldControllerTest {
     @result Valid Response with Response Code 200
     */
     @Test
-    @Ignore
     public void testHelloWorld() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
                 "/helloWorld").accept(

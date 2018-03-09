@@ -43,7 +43,6 @@ public class ExternalRestControllerTest {
         @result Valid Response with Response Code 200
      */
     @Test
-    @Ignore
     public void testExternalApiSuccess() throws Exception {
         int mockResponseCode = 200;
         Mockito.when(externalRestService.getResponseFromExternalURL()).thenReturn(mockResponse);
@@ -60,7 +59,6 @@ public class ExternalRestControllerTest {
     @result reponse as "" with Response Code 204
     */
     @Test
-    @Ignore
     public void testExternalApiResultNull() throws Exception {
         int expectedResponseCode = 204;
         Mockito.when(externalRestService.getResponseFromExternalURL()).thenReturn(null);
@@ -77,7 +75,6 @@ public class ExternalRestControllerTest {
     @result Exception caught with Response Code 500
     */
     @Test
-    @Ignore
     public void testExternalApiThrowException() throws Exception {
 
         int expectedResponseCode = 500;
