@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 
 /**
@@ -22,14 +21,19 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     @JsonIgnore
     private long id;
+
+    @ApiModelProperty(notes = "FirstName of the Employee")
+    @Column(name = "number")
+    private long number;
 
 
     @ApiModelProperty(notes = "FirstName of the Employee")
     @Column(name = "firstName")
     private String firstName;
+
+
 
     @ApiModelProperty(notes = "LastName of the Employee")
     @Column(name = "lastName")
@@ -50,6 +54,14 @@ public class Employee {
     }
 
 
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -66,14 +78,15 @@ public class Employee {
 
     }
 
-    public Employee(String firstName, String lastName) {
+    public Employee(Long number, String firstName, String lastName) {
+        this.number = number;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
     @Override
     public String toString() {
-        return "Employee: [id: "+ id + " , FirstName: " + firstName + " , LastName: " + lastName + "]";
+        return "Employee: [id: "+ id + " , Number: " + number + " , FirstName: " + firstName + " , LastName: " + lastName + "]";
     }
 
     @Override
@@ -84,15 +97,13 @@ public class Employee {
         Employee employee = (Employee) o;
 
         if (id != employee.id) return false;
-        if (!firstName.equals(employee.firstName)) return false;
-        return lastName.equals(employee.lastName);
+        return number == employee.number;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
+        result = 31 * result + (int) (number ^ (number >>> 32));
         return result;
     }
 }

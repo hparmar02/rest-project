@@ -43,12 +43,12 @@ public class EmployeeService {
 
     /**
      * This method is used find an Employee by giving an id.
-     * @param firstName This is the parameter to get method
+     * @param number This is the parameter to get method
      * @return Employee This returns Employee object for the id.
      */
-    public Optional<Employee> get(String firstName) throws Exception{
-        logger.debug("Get Employee for FirstName: {}", firstName);
-        return employeeRepository.getByFirstName(firstName);
+    public Optional<Employee> get(Long number) throws Exception{
+        logger.debug("Get Employee for number: {}", number);
+        return employeeRepository.getByNumber(number);
     }
 
     /**

@@ -21,7 +21,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void testSave() throws Exception{
-        Employee newEmployee = new Employee ("firstNameTest", "lastNameTest");
+        Employee newEmployee = new Employee (1L, "firstNameTest", "lastNameTest");
 
         Employee actualEmployee = employeeService.save(newEmployee);
         Assert.assertEquals(newEmployee, actualEmployee);
@@ -31,16 +31,16 @@ public class EmployeeServiceTest {
 
     @Test
     public void testDelete() throws Exception{
-        Employee newEmployee = new Employee ("firstNameTest_1", "lastNameTest_!");
+        Employee newEmployee = new Employee (2L, "firstNameTest_1", "lastNameTest_!");
 
         employeeService.save(newEmployee);
 
-        Optional<Employee> savedEmployee = employeeService.get("firstNameTest_1");
+        Optional<Employee> savedEmployee = employeeService.get(2L);
         Assert.assertEquals(newEmployee, savedEmployee.get());
         Long id = savedEmployee.get().getId();
         employeeService.delete(id);
 
-        Optional<Employee> actualEmployee = employeeService.get("firstNameTest_1");
+        Optional<Employee> actualEmployee = employeeService.get(2L);
         Assert.assertFalse(actualEmployee.isPresent());
 
     }
@@ -48,10 +48,10 @@ public class EmployeeServiceTest {
 
     @Test
     public void testGet() throws Exception{
-        Employee newEmployee = new Employee ("firstNameTest_2", "lastNameTest_2");
+        Employee newEmployee = new Employee (5L, "firstNameTest_2", "lastNameTest_2");
 
         employeeService.save(newEmployee);
-        Optional<Employee> actualEmployee = employeeService.get("firstNameTest_2");
+        Optional<Employee> actualEmployee = employeeService.get(5L);
         Assert.assertEquals(newEmployee, actualEmployee.get());
     }
 }

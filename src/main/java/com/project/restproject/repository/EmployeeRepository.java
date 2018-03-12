@@ -18,5 +18,5 @@ import java.util.Optional;
  */
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
-    Optional<Employee> getByFirstName(String name);
+    Optional<Employee> getByNumber(Long number);
 }

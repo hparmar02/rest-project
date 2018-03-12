@@ -23,7 +23,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @ApiOperation(value = "Returns Employee for a firstName")
+    @ApiOperation(value = "Returns Employee for a number")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 200, message = "Employee Object" ),
@@ -31,23 +31,23 @@ public class EmployeeController {
                     @ApiResponse(code = 500, message = "Exception - Internal Error" )
             }
     )
-    @RequestMapping(value = "/employee/{firstName}", method= RequestMethod.GET)
-    public ResponseEntity<?> getEmployee(@PathVariable("firstName") String firstName){
-        logger.info("GET Request received for Employee firstName: {}", firstName);
+    @RequestMapping(value = "/employee/{number}", method= RequestMethod.GET)
+    public ResponseEntity<?> getEmployee(@PathVariable("number") Long number){
+        logger.info("GET Request received for Employee number: {}", number);
         try{
-            Optional<Employee> employee = employeeService.get(firstName);
+            Optional<Employee> employee = employeeService.get(number);
             if (employee.isPresent()){
                 return new ResponseEntity<>(employee, HttpStatus.OK);
             }
-            logger.error("GET Employee with firstName: {} NOT found.", firstName);
-            return new ResponseEntity<>("Employee not found with firstName: " + firstName, HttpStatus.NOT_FOUND);
+            logger.error("GET Employee with number: {} NOT found.", number);
+            return new ResponseEntity<>("Employee not found with number: " + number, HttpStatus.NOT_FOUND);
         } catch (Exception ex){
-            logger.error("Exception - Get Request for Employee firstName: {}.",firstName, ex);
+            logger.error("Exception - Get Request for Employee number: {}.",number, ex);
             return new ResponseEntity<>("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @ApiOperation(value = "Deletes Employee for firstName")
+    @ApiOperation(value = "Deletes Employee for number")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 200, message = "Successfully deleted" ),
@@ -55,22 +55,22 @@ public class EmployeeController {
                     @ApiResponse(code = 500, message = "Exception - Internal Error" )
             }
     )
-    @RequestMapping(value = "/employee/{firstName}", method= RequestMethod.DELETE)
-    public ResponseEntity<?> deleteEmployee(@PathVariable("firstName") String firstName){
-        logger.info("DELETE Request received for Employee firstName: {}", firstName);
+    @RequestMapping(value = "/employee/{number}", method= RequestMethod.DELETE)
+    public ResponseEntity<?> deleteEmployee(@PathVariable("number") Long number){
+        logger.info("DELETE Request received for Employee number: {}", number);
         try{
-            Optional<Employee> employee = employeeService.get(firstName);
+            Optional<Employee> employee = employeeService.get(number);
             if (employee.isPresent()){
 
                 employeeService.delete(employee.get().getId());
-                logger.debug("Employee with firstName: {} successfully DELETE", firstName);
+                logger.debug("Employee with number: {} successfully DELETE", number);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-            logger.error("GET Employee with firstName: {} NOT found. DELETE not completed", firstName);
+            logger.error("GET Employee with number: {} NOT found. DELETE not completed", number);
             return new ResponseEntity<>("Delete NOT done. " +
-                    "Employee NOT found with firstName: " + firstName, HttpStatus.NOT_FOUND);
+                    "Employee NOT found with number: " + number, HttpStatus.NOT_FOUND);
         } catch (Exception ex){
-            logger.error("Exception - DELETE Request for Employee firstName: {}.",firstName, ex);
+            logger.error("Exception - DELETE Request for Employee number: {}.",number, ex);
             return new ResponseEntity<>("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -89,10 +89,10 @@ public class EmployeeController {
 
         logger.info("Save employee : {}", employee);
         try{
-            Optional<Employee> existingEmployee = employeeService.get(employee.getFirstName());
+            Optional<Employee> existingEmployee = employeeService.get(employee.getNumber());
             if (existingEmployee.isPresent()){
                 logger.error("Employee exists with - Employee: {} - Save NOT completed.", existingEmployee);
-                return new ResponseEntity<>("Employee exists with firstName " + employee.getFirstName(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Employee exists with number " + employee.getNumber(), HttpStatus.BAD_REQUEST);
             }
             Employee savedEmployee = employeeService.save(employee);
             return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);

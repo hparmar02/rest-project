@@ -41,14 +41,14 @@ public class EmployeeControllerTest {
     public void setUp(){
         expectedResponse = "{\"id\":1,\"firstName\":\"testFirstName\",\"lastName\":\"testLastName\"}";
         exampleEmployeeJSON = "{\"firstName\":\"testFirstName\",\"id\":1,\"lastName\":\"testLastName\"}";
-        mockEmployee = new Employee("testFirstName", "testLastName");
+        mockEmployee = new Employee(1L, "testFirstName", "testLastName");
     }
 
     @Test
     @Ignore
     public void testSaveSuccess() throws Exception{
         int expectedResponseCode = 201;
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.empty());
 
         Mockito.when(employeeService.save(Mockito.any(Employee.class))).thenReturn(mockEmployee);
         requestBuilder = MockMvcRequestBuilders.post(
@@ -65,7 +65,7 @@ public class EmployeeControllerTest {
     @Ignore
     public void testSaveEmployeeAlreadyExists() throws Exception{
         int expectedResponseCode = 400;
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.of(mockEmployee));
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.of(mockEmployee));
 
 
         requestBuilder = MockMvcRequestBuilders.post(
@@ -81,7 +81,7 @@ public class EmployeeControllerTest {
     @Ignore
     public void testSaveEmployeeException() throws Exception{
         int expectedResponseCode = 500;
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.empty());
 
         Mockito.when(employeeService.save(Mockito.any(Employee.class))).thenThrow(Exception.class);;
 
@@ -98,7 +98,7 @@ public class EmployeeControllerTest {
     @Test
     @Ignore
     public void testGetEmployeeSuccess() throws Exception{
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.of(mockEmployee));
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.of(mockEmployee));
 
         requestBuilder = MockMvcRequestBuilders.get(
                 "/employee/1").accept(
@@ -116,7 +116,7 @@ public class EmployeeControllerTest {
     @Test
     @Ignore
     public void testGetEmployeeNotFound() throws Exception{
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.empty());
 
         requestBuilder = MockMvcRequestBuilders.get(
                 "/employee/1").accept(
@@ -132,7 +132,7 @@ public class EmployeeControllerTest {
     @Ignore
     public void testGetEmployeethrowException() throws Exception{
         int expectedResponseCode = 500;
-        Mockito.when(employeeService.get(Mockito.anyString())).thenThrow(Exception.class);
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenThrow(Exception.class);
         requestBuilder = MockMvcRequestBuilders.get(
                 "/employee/1").accept(
                 MediaType.APPLICATION_JSON);
@@ -146,7 +146,7 @@ public class EmployeeControllerTest {
     @Test
     @Ignore
     public void testDeleteEmployeeSuccess() throws Exception{
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.of(mockEmployee));
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.of(mockEmployee));
 
         requestBuilder = MockMvcRequestBuilders.delete(
                 "/employee/1").accept(
@@ -162,7 +162,7 @@ public class EmployeeControllerTest {
     @Test
     @Ignore
     public void testDeleteEmployeeNotFound() throws Exception{
-        Mockito.when(employeeService.get(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(employeeService.get(Mockito.anyLong())).thenReturn(Optional.empty());
 
         requestBuilder = MockMvcRequestBuilders.delete(
                 "/employee/1").accept(

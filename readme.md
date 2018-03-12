@@ -48,24 +48,24 @@ Content: JSON list
 ```
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \ 
    "firstName": "testFirstName", \ 
-   "lastName": "testLastName" \ 
- }' 'http://localhost:8080/employee/'
+   "lastName": "testLastName", \ 
+   "number": 1}' 'http://localhost:8080/employee/'
  
 ```
 
 ### GET Employee
 
 ```
-curl -X GET --header 'Accept: application/json' 'http://localhost:8080/employee/testFirstName'
+curl -X GET --header 'Accept: application/json' 'http://localhost:8080/employee/1'
 
 Response: HTTP 200
-Content: Employee with firstName = testFirstName
+Content: Employee with employeeNumber = 1
 ```
 
 ### DELETE Employee
 
 ```
-curl -X DELETE --header 'Accept: */*' 'http://localhost:8080/employee/testFirstName'
+curl -X DELETE --header 'Accept: */*' 'http://localhost:8080/employee/1'
 
 Response: HTTP 200
 ```
