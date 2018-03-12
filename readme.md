@@ -1,6 +1,8 @@
-###Spring Boot "RestAPI" Example Project with in memory H2 database
+Spring Boot "RestAPI" Example Project with in memory H2 database
+===================================================================
 
-###How to Run
+How to Run
+----------
 This application is packaged as a jar which has Jetty embedded. No installation necessary. You run it using the java -jar command.
 
 * Clone this repository - git clone git@github.com:hparmar02/rest-project.git
